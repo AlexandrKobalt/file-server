@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 
-	"github.com/AlexandrKobalt/trip-track/backend/file-server/pkg/duration"
+	"github.com/AlexandrKobalt/trip-track_file-server/pkg/duration"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
 )

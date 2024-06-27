@@ -4,9 +4,9 @@ import (
 	"log"
 	"log/slog"
 
-	"github.com/AlexandrKobalt/trip-track/backend/file-server/config"
-	"github.com/AlexandrKobalt/trip-track/backend/file-server/internal/app"
-	"github.com/AlexandrKobalt/trip-track/backend/file-server/pkg/lifecycle"
+	"github.com/AlexandrKobalt/trip-track_file-server/config"
+	"github.com/AlexandrKobalt/trip-track_file-server/internal/app"
+	"github.com/AlexandrKobalt/trip-track_file-server/pkg/lifecycle"
 )
 
 func main() {

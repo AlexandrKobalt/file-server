@@ -8,13 +8,13 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/AlexandrKobalt/trip-track/backend/file-server/config"
-	grpcserver "github.com/AlexandrKobalt/trip-track/backend/file-server/pkg/grpc/server"
-	"github.com/AlexandrKobalt/trip-track/backend/file-server/pkg/lifecycle"
 	fileserverproto "github.com/AlexandrKobalt/trip-track/backend/proto/fileserver"
+	"github.com/AlexandrKobalt/trip-track_file-server/config"
+	grpcserver "github.com/AlexandrKobalt/trip-track_file-server/pkg/grpc/server"
+	"github.com/AlexandrKobalt/trip-track_file-server/pkg/lifecycle"
 
-	filedelivery "github.com/AlexandrKobalt/trip-track/backend/file-server/internal/file/delivery/grpc"
-	fileservice "github.com/AlexandrKobalt/trip-track/backend/file-server/internal/file/service"
+	filedelivery "github.com/AlexandrKobalt/trip-track_file-server/internal/file/delivery/grpc"
+	fileservice "github.com/AlexandrKobalt/trip-track_file-server/internal/file/service"
 )
 
 var (

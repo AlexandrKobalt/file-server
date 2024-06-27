@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"os"
 
-	fileservice "github.com/AlexandrKobalt/trip-track/backend/file-server/internal/file/service"
-	"github.com/AlexandrKobalt/trip-track/backend/file-server/pkg/duration"
-	grpcserver "github.com/AlexandrKobalt/trip-track/backend/file-server/pkg/grpc/server"
+	fileservice "github.com/AlexandrKobalt/trip-track_file-server/internal/file/service"
+	"github.com/AlexandrKobalt/trip-track_file-server/pkg/duration"
+	grpcserver "github.com/AlexandrKobalt/trip-track_file-server/pkg/grpc/server"
 	"github.com/go-playground/validator"
 )
 

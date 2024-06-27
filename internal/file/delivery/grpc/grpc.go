@@ -3,8 +3,8 @@ package grpc
 import (
 	"context"
 
-	"github.com/AlexandrKobalt/trip-track/backend/file-server/internal/file/service"
 	fileserverproto "github.com/AlexandrKobalt/trip-track/backend/proto/fileserver"
+	"github.com/AlexandrKobalt/trip-track_file-server/internal/file/service"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
