@@ -7,13 +7,17 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
+	slogfiber "github.com/samber/slog-fiber"
 
-	fileserverproto "github.com/AlexandrKobalt/trip-track/backend/proto/fileserver"
 	"github.com/AlexandrKobalt/trip-track_file-server/config"
+	"github.com/AlexandrKobalt/trip-track_file-server/pkg/fiberapp"
 	grpcserver "github.com/AlexandrKobalt/trip-track_file-server/pkg/grpc/server"
 	"github.com/AlexandrKobalt/trip-track_file-server/pkg/lifecycle"
+	fileserverproto "github.com/AlexandrKobalt/trip-track_proto/fileserver"
 
-	filedelivery "github.com/AlexandrKobalt/trip-track_file-server/internal/file/delivery/grpc"
+	filedeliverygrpc "github.com/AlexandrKobalt/trip-track_file-server/internal/file/delivery/grpc"
+	filedeliveryhttp "github.com/AlexandrKobalt/trip-track_file-server/internal/file/delivery/http"
+	filehandler "github.com/AlexandrKobalt/trip-track_file-server/internal/file/handler"
 	fileservice "github.com/AlexandrKobalt/trip-track_file-server/internal/file/service"
 )
 
@@ -42,19 +46,25 @@ func New(cfg *config.Config, logger *slog.Logger) *App {
 }
 
 func (a *App) Start(ctx context.Context) error {
+	fiberApp := fiberapp.New(a.cfg.FiberApp, a.logger)
+	fiberApp.App.Use(slogfiber.New(a.logger))
+
 	grpcServer, err := grpcserver.New(a.cfg.GRPC)
 	if err != nil {
 		log.Fatalf("failed to initialize gRPC server: %s", err.Error())
 	}
 
 	fileService := fileservice.New(a.cfg.Service.File)
-	fileDelivery := filedelivery.New(fileService)
+	fileHandler := filehandler.New(a.cfg.Service.File.UploadDirectory)
+	fileDeliveryGRPC := filedeliverygrpc.New(fileService)
+	filedeliveryhttp.Map(fiberApp.App.Group("/files"), fileHandler)
 
-	fileserverproto.RegisterFileServer(grpcServer.App, fileDelivery)
+	fileserverproto.RegisterFileServer(grpcServer.App, fileDeliveryGRPC)
 
 	a.cmps = append(
 		a.cmps,
 		cmp{grpcServer, "gRPC Server"},
+		cmp{fiberApp, "Fiber v2"},
 	)
 
 	okCh, errCh := make(chan any), make(chan error)

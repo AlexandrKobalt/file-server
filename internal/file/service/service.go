@@ -2,12 +2,12 @@ package service
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 
-	fileserverproto "github.com/AlexandrKobalt/trip-track/backend/proto/fileserver"
+	fileserverproto "github.com/AlexandrKobalt/trip-track_proto/fileserver"
 	"github.com/google/uuid"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type Config struct {
@@ -20,12 +20,17 @@ type service struct {
 }
 
 func New(cfg Config) IService {
+	err := os.MkdirAll(cfg.UploadDirectory, os.ModePerm)
+	if err != nil {
+		log.Fatalf("error on creating directory: %s", err.Error())
+	}
+
 	return &service{cfg: cfg}
 }
 
 func (s *service) Upload(
 	request *fileserverproto.UploadRequest,
-) (response *emptypb.Empty, err error) {
+) (response *fileserverproto.UploadResponse, err error) {
 	key := uuid.New().String()
 	filePath := filepath.Join(s.cfg.UploadDirectory, key)
 
@@ -40,7 +45,9 @@ func (s *service) Upload(
 		return nil, fmt.Errorf("error on file write: %w", err)
 	}
 
-	return response, nil
+	return &fileserverproto.UploadResponse{
+		Key: key,
+	}, nil
 }
 
 func (s *service) GetURL(

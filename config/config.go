@@ -6,6 +6,7 @@ import (
 
 	fileservice "github.com/AlexandrKobalt/trip-track_file-server/internal/file/service"
 	"github.com/AlexandrKobalt/trip-track_file-server/pkg/duration"
+	"github.com/AlexandrKobalt/trip-track_file-server/pkg/fiberapp"
 	grpcserver "github.com/AlexandrKobalt/trip-track_file-server/pkg/grpc/server"
 	"github.com/go-playground/validator"
 )
@@ -18,8 +19,9 @@ type Config struct {
 	StartTimeout duration.Seconds `validate:"required"`
 	StopTimeout  duration.Seconds `validate:"required"`
 
-	GRPC    grpcserver.Config
-	Service struct {
+	FiberApp fiberapp.Config
+	GRPC     grpcserver.Config
+	Service  struct {
 		File fileservice.Config
 	}
 }
